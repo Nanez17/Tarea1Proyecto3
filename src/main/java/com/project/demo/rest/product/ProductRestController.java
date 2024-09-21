@@ -1,5 +1,6 @@
 package com.project.demo.rest.product;
 
+import com.project.demo.logic.entity.category.Category;
 import com.project.demo.logic.entity.product.Product;
 import com.project.demo.logic.entity.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class ProductRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
         return productRepository.findById(id)
                 .map(existingProduct -> {
@@ -47,7 +49,14 @@ public class ProductRestController {
                 });
     }
 
+    @PostMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    public Product addProduct(@RequestBody Product product) {
+        return  productRepository.save(product);
+    }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public void deleteProduct(@PathVariable Long id) {
         productRepository.deleteById(id);
     }

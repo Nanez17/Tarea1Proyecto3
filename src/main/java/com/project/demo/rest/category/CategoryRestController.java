@@ -2,6 +2,7 @@ package com.project.demo.rest.category;
 
 import com.project.demo.logic.entity.category.Category;
 import com.project.demo.logic.entity.category.CategoryRepository;
+import com.project.demo.logic.entity.game.Game;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,6 +34,7 @@ public class CategoryRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public Category updateCategory(@PathVariable Long id, @RequestBody Category category) {
         return categoryRepository.findById(id)
                 .map(existingCategory -> {
@@ -46,7 +48,14 @@ public class CategoryRestController {
                 });
     }
 
+    @PostMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
+    public Category addCategory(@RequestBody Category category) {
+        return  categoryRepository.save(category);
+    }
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     public void deleteCategory(@PathVariable Long id) {
         categoryRepository.deleteById(id);
     }
