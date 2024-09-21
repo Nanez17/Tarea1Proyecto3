@@ -13,7 +13,7 @@ import java.util.List;
 
 @Table(name = "product")
 @Entity
-public abstract class Product implements ProductRepository {
+public class Product{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
@@ -40,7 +40,7 @@ public abstract class Product implements ProductRepository {
     private Date updatedAt;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("CATEGORY_" + category.getName().toString());
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("CATEGORY_" + category.getName());
         return List.of(authority);
     }
 
